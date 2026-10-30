@@ -31,7 +31,7 @@ cursor = conn.cursor()
 # ==============================================================================
 """
 Task 1: Total Flight Count -- Baseline Question
-TODO:   Write a SQL query to count the total number of flights in the Flights table.
+TODO:   Write a SQL query to count the total number of flights in the Flight table.
         Return the count as a single value.
 """
 
@@ -59,10 +59,10 @@ TODO:   Modify the SQL query below to show:
 
 # Type your SQL query below
 sql_task_2 = """
-SELECT origin, ___(*)  AS flight_count, ROUND(___(fare), ___) AS avg_fare
-FROM ___
-GROUP BY ___
-ORDER BY flight_count ___;
+SELECT origin, COUNT(*)  AS flight_count, ROUND(AVG(fare), 2) AS avg_fare
+FROM Flight
+GROUP BY origin
+ORDER BY flight_count DESC;
 """
 # Execute SQL query and fetch the result
 cursor.execute(sql_task_2)
@@ -71,7 +71,7 @@ cursor.execute(sql_task_2)
 result_task_2 = cursor.fetchall()
 
 print("Task 2: Flight Summary by Origin City")
-print(f"{'Origin':<15} | {'Flights':<10} | {'Avg Fare ($)':<12}")
+print(f"{'Origin':<15} | {'Flight':<10} | {'Avg Fare ($)':<12}")
 # Print all the results
 for origin, count, avg_fare in result_task_2:
     print(f"{origin:<15} | {count:<10} | {avg_fare:<12.2f}")
@@ -87,11 +87,11 @@ TODO:   Find which aircraft model is used for each flight from Madison.
 
 # Type your SQL query below
 sql_task_3 = """
-SELECT f.___, f.destination, a.___, a.model, f.fare
-FROM ___ AS f
-___ Aircraft AS a ON f.___ = a.aid
-WHERE f.origin = '___'
-ORDER BY f.fare ___;
+SELECT f.flno, f.destination, a.mname, a.model, f.fare
+FROM Flight AS f
+JOIN Aircraft AS a ON f.aid = a.aid
+WHERE f.origin = 'Madison'
+ORDER BY f.fare ASC;
 """
 
 # Execute SQL query and fetch the result
